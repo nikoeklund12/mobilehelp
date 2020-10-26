@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Streamify</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+		<link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet" />
+
+		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+		<style>
+   .openNavBar {
+    color: gray;
+    float: right;
+   }
+  .overlay {
+  height: 0%;
+  width: 100%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background: white;
+  overflow-y: hidden;
+  transition: 0.5s;
+}
+
+.overlay-content {
+  position: relative;
+  top: 25%;
+  width: 100%;
+  text-align: center;
+  margin-top: 30px;
+}
+
+.overlay a {
+  padding: 8px;
+  text-decoration: none;
+  font-size: 36px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
+.overlay a:hover, .overlay a:focus {
+  color: #f1f1f1;
+}
+
+.overlay .closebtn {
+  position: absolute;
+  top: 20px;
+  right: 45px;
+  font-size: 60px;
+}
+
+@media screen and (max-height: 450px) {
+  .overlay {overflow-y: auto;}
+  .overlay a {font-size: 20px}
+  .overlay .closebtn {
+  font-size: 40px;
+  top: 15px;
+  right: 35px;
+  }
+}
+
+		</style>
+		<style>
+#snackbar {
+  visibility: hidden;
+  min-width: 250px;
+  margin-left: -125px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 2px;
+  padding: 16px;
+  position: fixed;
+  z-index: 1;
+  left: 50%;
+  bottom: 30px;
+  font-size: 17px;
+}
+
+#snackbar.show {
+  visibility: visible;
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@-webkit-keyframes fadein {
+  from {bottom: 0; opacity: 0;} 
+  to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+  from {bottom: 30px; opacity: 1;} 
+  to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+}
+		</style>
+		<style>
+.dark-mode {
+  background-color: black;
+  color: white;
+}
+.cookie-bar {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 30px;
+  text-align: center;
+  line-height: 30px;
+  background: #5d8ffc;
+  color: white;
+  font-size: 14px;
+  font-family: "Lato", sans-serif;
+  font-weight: 100;
+  transition: .8s;
+  animation: slideIn .8s;
+  animation-delay: .8s;
+  .message {
+    white-space: nowrap;
+    text-shadow: 0 1px 0 darken(#5d8ffc, 10%);
+    @media (max-width: 767px){
+      display: none;
+    }
+  }
+  .mobile {
+    display: none;
+    @media (max-width: 767px){
+      display: inline-block;
+    }
+  }
+}
+@keyframes slideIn {
+  0% {
+    transform: translateY(-50px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+.close-cb {
+  border: none;
+  color: white;
+  background: #5d8ffc;
+  position: absolute;
+  display: inline-block;
+  right: 10px;
+  top: 0;
+  cursor: pointer;
+  border-radius: 3px;
+  box-shadow: inset 0 0 3px 0 rgba(0,0,0,.2);
+  line-height: 30px;
+  height: 30px;
+  width: 30px;
+  font-size: 16px;
+  font-weight: bold;
+  &:hover {
+    background: darken(red, 10%);
+  }
+}
+.checkbox-cb {
+  display: none;
+  &:checked + .cookie-bar {
+    transform: translateY(-50px);
+  }
+}
+a {
+  color: blue;
+}
+ .alert {
+     padding: 20px;
+      background-color: #5d8ffc;
+      color: white;
+      height: auto;
+    }
+
+  .closebtn {
+      height: auto;
+      margin-left: 15px;
+      color: white;
+      font-weight: bold;
+      float: right;
+      font-size: 22px;
+      line-height: 20px;
+      cursor: pointer;
+      transition: 0.3s;           
+    }
+
+  
+		</style>
+		<script>
+function setCookie(cname,cvalue,exdays) {
+  var d = new Date();
+  d.setTime(d.getTime() + (exdays*24*60*60*1000));
+  var expires = "expires=" + d.toGMTString();
+  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookie(cname) {
+  var name = cname + "=";
+  var decodedCookie = decodeURIComponent(document.cookie);
+  var ca = decodedCookie.split(';');
+  for(var i = 0; i < ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+
+function checkCookie() {
+  var user=getCookie("username");
+  if (user != "") {
+    alert("Welcome " + user);
+  } else {
+     user = prompt("Please enter your name:","");
+     if (user != "" && user != null) {
+       setCookie("username", user, 30);
+     }
+  }
+}
+
+		</script>
+		<style>
+
+
+#menuToggle
+{
+  display: block;
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  transition: 0.5s;
+  padding-top: 10px;
+  padding-left: 10px;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+#menuToggle a
+{
+  text-decoration: none;
+  color: gray;
+  
+  transition: color 0.3s ease;
+}
+
+#menuToggle a:hover
+{
+  color: tomato;
+}
+
+
+#menuToggle input
+{
+  display: block;
+  width: 40px;
+  height: 32px;
+  position: absolute;
+  top: -7px;
+  left: -5px;
+  
+  cursor: pointer;
+  
+  opacity: 0; /* hide this */
+  z-index: 2; /* and place it over the hamburger */
+  
+  -webkit-touch-callout: none;
+}
+
+/*
+ * Just a quick hamburger
+ */
+#menuToggle span
+{
+  display: block;
+  width: 33px;
+  height: 4px;
+  margin-bottom: 5px;
+  position: relative;
+  
+background: gray;
+  border-radius: 3px;
+  
+  z-index: 1;
+  
+  transform-origin: 4px 0px;
+  
+  transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
+              background 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
+              opacity 0.55s ease;
+}
+
+#menuToggle span:first-child
+{
+  transform-origin: 0% 0%;
+}
+
+#menuToggle span:nth-last-child(2)
+{
+  transform-origin: 0% 100%;
+}
+
+/* 
+ * Transform all the slices of hamburger
+ * into a crossmark.
+ */
+#menuToggle input:checked ~ span
+{
+  opacity: 1;
+  transform: rotate(45deg) translate(-2px, -1px);
+background: gray;
+}
+
+/*
+ * But let's hide the middle one.
+ */
+#menuToggle input:checked ~ span:nth-last-child(3)
+{
+  opacity: 0;
+  transform: rotate(0deg) scale(0.2, 0.2);
+}
+
+/*
+ * Ohyeah and the last one should go the other direction
+ */
+#menuToggle input:checked ~ span:nth-last-child(2)
+{
+  transform: rotate(-45deg) translate(0, -1px);
+}
+
+/*
+ * Make this absolute positioned
+ * at the top left of the screen
+ */
+#menu
+{
+  overflow-x: hidden;
+    overflow-y: auto;
+  position: absolute;
+  width: 550px;
+ height: 100%;
+border-radius: 25px;
+  margin: -100px 0 0 -50px;
+  padding: 50px;
+  padding-top: 125px;
+background: white; 
+border: 10px solid gray;
+  list-style-type: none;
+  -webkit-font-smoothing: antialiased;
+  /* to stop flickering of text in safari */
+  transform-origin: 0% 0%;
+  transform: translate(-100%, 0);
+  
+  transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
+}
+
+#menu li
+{
+ margin: 0;
+    padding: 0;
+    overflow: hidden;
+    list-style: none;
+  padding: 10px 0;
+  font-size: 35px;
+  color: white;
+  font-style: italic;
+  font-family: "Times New Roman", Times, serif;
+}
+
+/*
+ * And let's slide it in from the left
+ */
+#menuToggle input:checked ~ ul
+{
+  transform: none;
+}
+
+		</style>
+		<style>
+.center {
+  display: block; 
+  margin-bottom: 300px;
+  margin-left: auto;
+  margin-right: auto;
+  width: auto;
+  height: auto;
+
+		</style>
+		<style>
+h3 {
+color: #5d8ffc;
+}
+input, button {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+}
+
+.main-div, .loggedin-div {
+  z-index: 1;
+  background: #fff;
+  padding: 8px 0;
+  width: 50%;
+  padding: 20px;
+  display: none;
+}
+
+.main-div input {
+  color: gray;
+  display: block;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: #fff;
+  padding: 15px;
+  outline: none;
+  width: 100%;
+  margin-bottom: 20px;
+  transition: 0.3s;
+  -webkit-transition: 0.3s;
+  -moz-transition: 0.3s;
+}
+
+.main-div input:focus {
+  border: 1px solid #777;
+  color: gray;
+}
+
+.main-div button, .loggedin-div button {
+  background: #5d8ffc;
+  color: #fff;
+  border: 1px solid #5d8ffc;
+  border-radius: 5px;
+  padding: 15px;
+  display: block;
+  width: 100%;
+  transition: 0.3s;
+  -webkit-transition: 0.3s;
+  -moz-transition: 0.3s;
+}
+
+.main-div button:hover, .loggedin-div button:hover {
+  background: #fff;
+  color: #5d8ffc;
+  border: 1px solid #5d8ffc;
+  cursor: pointer;
+}
+body {
+  margin: 0;
+  font-family: 'Nunito', sans-serif;
+}
+#txt {
+color: #5d8ffc;
+}
+#title {
+color: gray;
+}
+#demo {
+color: gray;
+}
+#h1 {
+color: #5d8ffc;
+}
+#show {
+color: gray;
+}
+#btnbutton {
+width: 100%; 
+cursor: not-allowed;
+}
+#darkmode {
+width: 100%; 
+}
+#demo {
+color: #5d8ffc;
+}
+#date {
+color: gray;
+}
+#last {
+color: gray;
+}
+#sncbar {
+width: 100%;
+}
+#print {
+color: gray;
+}
+#countdown {
+color: gray;
+}
+@media only screen and (max-width: 600px) {
+  
+}
+
+		</style>
+		<meta name="theme-color" content="#5d8ffc" />
+
+		<link href="css/bootstrap.css" rel="stylesheet" />
+
+		<link href="css/pe-icon-7-stroke.css" rel="stylesheet" />
+
+		<link href="css/ct-navbar.css" rel="stylesheet" />
+
+		<script src="js/jquery-1.10.2.js"></script>
+		<script src="js/bootstrap.js"></script>
+		<script src="js/ct-navbar.js"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+		<meta charset="ANSI" />
+
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous" />
+
+		<meta name="viewport" content="widh=device.widh, initial-scale=1, shrink-to-fit=no" />
+
+		<style> 
+audio { width: 60%; } p {text-align: center; color: #5d8ffc; font-size: 20px; } body { background-color: white; } body {font-face: "optima";} .sidebar { height: 100%; width: 300px; position: fixed; z-index: 1; top: 0; left: 0; background-color: #F0F8FF; border-radius: 20px; overflow-x: hidden; padding-top: 16px; } .sidebar a { padding: 6px 8px 6px 16px; text-align: center; text-decoration: none; font-size: 20px; color: #5d8ffc; display: block; } .sidebar a:hover { color: #5d8ffc; } .main { margin-left: 160px; /* Same as the width of the sidenav */ padding: 0px 10px; } 
+ @media screen and (max-width: 400px) { 
+ .sidebar { 
+ visibility: hidden;
+  display: none; 
+  }
+ .logo {
+  visibility: hidden;
+  display: none;
+ }
+ /*#menuToggle {
+  visibility: hidden;
+  display: none; 
+ }
+   #hide {
+    display: none;
+    visibility: hidden;
+   }*/
+   .time {
+    color: gray;
+    }
+   }
+ }
+  
+		</style>
+	</head>
+	<body id="body" onload="checkCookie()">
+		<!--Bootstrap JS> <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script> <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script> <!==Bootstrap CSS Theme -->
+		
+	<!--	<script>location.href = "http://mobilehelp.infinityfreeapp.com/Premium/maintenance.html";</script>-->
+		<input class="checkbox-cb" id="checkbox-cb" type="checkbox" />
+
+		<div class="alert">
+			<span class="closebtn" onclick="this.parentElement.style.display='none';">×</span>
+			<strong>Notice!</strong>This website uses cookies to give you better experience. By using this website you agree to the
+			<a href="http://mobilehelp.infinityfreeapp.com/Premium/terms.html">terms.</a>
+		</div>
+		<div id="myNav" class="overlay">
+			<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+			<div class="overlay-content">
+				<a href="http://mobilehelp.infinityfreeapp.com/Welcome.html">Home</a>
+				<a href="http://mobilehelp.infinityfreeapp.com/Premium/terms.html">Terms</a>
+				<a href="https://chatroll.com/4txj">Chat</a>
+				<a href="mailto:mobilehelp.reply@gmail.com">Contact</a>
+			</div>
+		</div>
+		<span class="openNavBar" style="font-size:30px;cursor:pointer" onclick="openNav()">☰</span>
+		<script>
+function openNav() {
+  document.getElementById("myNav").style.height = "100%";
+}
+
+function closeNav() {
+  document.getElementById("myNav").style.height = "0%";
+}
+
+		</script>
+		<nav role="navigation">
+			<div id="menuToggle">
+				<input type="checkbox" />
+
+				<span></span>
+				<span></span>
+				<span></span>
+				<ul id="menu">
+					<h1 align="center" id="title">Settings</h1>
+					<!--<button id="sncbar" class="btn btn-secondary" onclick="myFunction()">Developer Information</button>-->
+
+<div id="snackbar">Who am i? I am a sixteen year old student whose goal is to study the programmer..</div>
+
+<script>
+function myFunction() {
+  var x = document.getElementById("snackbar");
+  x.className = "show";
+  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+-}
+</script>
+					<br>
+
+					<br>
+
+					<br>
+
+					<button id="btnbutton" class="btn btn-secondary" disabled="disabled" onclick="darkmode()">Enable Dark Mode</button>
+					<script>
+function darkmode() {
+   var element = document.body;
+   element.classList.toggle("dark-mode");
+}
+
+					</script>
+					<br />
+
+					<br />
+
+					<br />
+
+					<button id="btnbutton" class="btn btn-secondary" disabled="disabled" type="button" onclick="txtColor()">Translator</button>
+					<br />
+
+					<br />
+
+					<br />
+
+					<button id="btnbutton" class="btn btn-secondary" disabled="disabled" type="button" onclick="change()">Change Password</button>
+					<script>
+function change() {
+  var txt;
+  if (confirm("Please Confirm!")) {
+    txt = "Error 5009. Undefined identifier.";
+  } else {
+    txt = "Cancelled!";
+  }
+  document.getElementById("show").innerHTML = txt;
+}
+
+					</script>
+					<br />
+
+					<br />
+
+					<br />
+
+					<button id="btnbutton" class="btn btn-secondary" disabled="disabled" onclick="more()">More Songs</button>
+					<script>
+function more() {
+  document.body.innerHTML = "Error!";
+}
+
+					</script>
+					<br />
+
+					<br />
+
+					<br />
+
+					<p id="show"></p>
+					<br />
+
+					<br />
+
+					<h1 align="center" id="print">Last Updated:</h1>
+					<p id="print">This site was last modified</p>
+					<p id="last"></p>
+					<script>document.getElementById("last").innerHTML = document.lastModified;</script>
+					<br />
+
+					<br />
+
+					<br />
+
+					<h1 align="center" id="print">Time For The Next Update:</h1>
+					<p id="countdown"></p>
+					<script>
+// Set the date we're counting down to
+var countDownDate = new Date("Oct 26, 2020 17:00:00").getTime();
+
+// Update the count down every 1 second
+var x = setInterval(function() {
+
+  // Get today's date and time
+  var now = new Date().getTime();
+    
+  // Find the distance between now and the count down date
+  var distance = countDownDate - now;
+    
+  // Time calculations for days, hours, minutes and seconds
+  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+  // Output the result in an element with id="demo"
+  document.getElementById("countdown").innerHTML = days + "d " + hours + "h "
+  + minutes + "m " + seconds + "s ";
+    
+  // If the count down is over, write some text 
+  if (distance < 0) {
+    clearInterval(x);
+    document.getElementById("demo").innerHTML = "EXPIRED";
+  }
+}, 1000);
+
+					</script>
+					<!--<br><br><br>
+					<h1 id="time">Time</h1>
+					<div id="clock"></div>
+					<script>
+					function startTime() {
+					var today = new Date();
+					var h = today.getHours();
+					var m = today.getMinutes();
+					var s = today.getSeconds();
+					// add a zero in front of numbers<10
+					m = checkTime(m);
+					s = checkTime(s);
+					document.getElementById("clock").innerHTML = h + ":" + m + ":" + s;
+					var t = setTimeout(function(){ startTime() }, 500);
+					</script>-->
+<br>
+<h1 align="center" id="print">Developer Favourites:</h1>
+<br>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/PPaFqUMqcJY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<br>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/6aLb6vJ_TkI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+				</ul>
+			</div>
+		</nav>
+		<div id="sidebar" class="sidebar">
+			<div class="logo">
+				<img src="https://dewey.tailorbrands.com/production/brand_version_mockup_image/527/3951531527_e2bf3049-904c-4f7c-a6a0-aafb25b73693.png?cb=1603109357" onerror="error()" />
+
+			</div>
+			<br />
+
+			<a href="http://mobilehelp.infinityfreeapp.com/Welcome.html">
+				<i></i>
+				Home
+
+			</a>
+			<a href="#">
+				<i></i>
+				Services
+
+			</a>
+			<a href="#">
+				<i></i>
+				Profile
+
+			</a>
+			<a href="ftp://192.168.43.179:2121/">
+				<i></i>
+				More
+
+			</a>
+			<a href="whatsapp://send?text=Try Streamify Premium for free: http://mobilehelp.infinityfreeapp.com/Premium/Streamify.html">
+				<i></i>
+				Share
+
+			</a>
+			<a href="https://hangouts.google.com/group/3tahhsTvXykRMqZL8">
+				<i></i>
+				Join
+
+			</a>
+			<a href="https://drive.google.com/file/d/1IOac7QNTGfI_XQdhqLikhEquKSJ1UTqH/view?usp=drivesdk">
+				<i></i>
+				Free app of the month
+
+			</a>
+			<a href="http://mobilehelp.infinityfreeapp.com/Report.html">
+				<i></i>
+				Report
+
+			</a>
+			<a href="https://github.com/nikoeklund12/mobilehelp">
+				<i></i>
+				Source Code
+
+			</a>
+			<a href="http://mobilehelp.infinityfreeapp.com/Premium/register.html">
+				<i></i>
+				Sign Up
+
+			</a>
+		</div>
+		<div>
+			<br />
+
+			<div align="center">
+				<h1 id="demo">Good Evening!
+					<script>
+if (new Date().getHours() < 12) {
+  document.getElementById("demo").innerHTML = "Good Morning!";
+}
+
+					</script>
+					<br />
+
+					<div align="center">
+<br>
+						<p id="h1">Katy Perry - Part Of Me</p>
+						<audio controls="" id="h1">
+							<source src="http://mobilehelp.infinityfreeapp.com/Media/Katy%20Perry%20-%20Part%20Of%20Me%20(Official).mp3" type="audio/mpeg">Your browser does not support the audio element.</source>
+						</audio>
+					</div>
+					<p>
+						<a href="https://database-mobilehelp.imfast.io/Katy%20Perry%20-%20Part%20Of%20Me%20(Official)%20(%20720%20X%201280%20).mp4">Watch Video!</a>
+					</p>
+				</h1>
+			</div>
+			<br />
+
+			<div align="center">
+				<p id="h1">DJ Oku Luukkainen & HesaÄijä (Feat. Erika Vikman & Danny) - 7300 Päivää</p>
+				<audio controls="" id="h1">
+					<source src="http://mobilehelp.infinityfreeapp.com/Media/DJ%20Oku%20Luukkainen%20&%20Hesa%c3%84ij%c3%a4%20-%207300%20p%c3%a4iv%c3%a4%c3%a4%20(feat.%20Erika%20Vikman%20&%20Danny).mp3" type="audio/mpeg">Your browser does not support the audio element.</source>
+				</audio>
+				<p>
+					<a href="#NoVideoAvailable!">Watch Video!</a>
+				</p>
+			</div>
+			<br />
+
+			<div align="center">
+				<p id="h1">Aksel Kankaanranta - Looking Back</p>
+				<audio controls="" id="h1">
+					<source src="http://mobilehelp.infinityfreeapp.com/Media/Aksel%20Kankaanranta%20-%20Looking%20Back%20(Lyric%20Video)%20UMK20.mp3" type="audio/mpeg">Your browser does not support the audio element.</source>
+				</audio>
+				<p>
+					<a href="#NoVideoAvailable!">Watch Video!</a>
+				</p>
+			</div>
+			<br />
+
+			<div align="center">
+				<p id="h1">Catharina Zulke - Eternity</p>
+				<audio controls="" id="h1">
+					<source src="http://mobilehelp.infinityfreeapp.com/Media/Catharina%20Z%c3%bchlke%20-%20Eternity%20(Lyric%20Video)%20UMK20.mp3" type="audio/mpeg">Your browser does not support the audio element.</source>
+				</audio>
+				<p>
+					<a href="#NoVideoAvailable!">Watch Video!</a>
+				</p>
+			</div>
+			<br />
+
+			<div align="center">
+				<p id="h1">Lady Gaga - Poker Face</p>
+				<audio controls="" id="h1">
+					<source src="http://mobilehelp.infinityfreeapp.com/Media/Lady%20Gaga%20-%20Poker%20Face%20(Official%20Music%20Video).mp3" type="audio/mpeg">Your browser does not support the audio element.</source>
+				</audio>
+				<p>
+					<a href="https://database-mobilehelp.imfast.io/Lady%20Gaga%20-%20Poker%20Face%20(Official%20Music%20Video)%20(%20720%20X%201280%20).mp4">Watch Video!</a>
+				</p>
+			</div>
+			<br />
+
+			<div align="center">
+				<p id="h1">Bruno Mars - Grenade</p>
+				<audio controls="" id="h1">
+					<source src="http://mobilehelp.infinityfreeapp.com/Media/Bruno%20Mars%20-%20Grenade%20%5bOfficial%20Video%5d.mp3" type="audio/mpeg">Your browser does not support the audio element.</source>
+				</audio>
+				<p>
+					<a href="https://database-mobilehelp.imfast.io/Bruno%20Mars%20-%20Grenade%20_Official%20Video_%20(%20720%20X%201280%20).mp4">Watch Video!</a>
+				</p>
+			</div>
+			<br />
+
+			<div align="center">
+				<p id="h1">Erika Vikman - Syntisten Pöytä</p>
+				<audio controls="" id="h1">
+					<source src="http://mobilehelp.infinityfreeapp.com/Media/Erika%20Vikman%20-%20Syntisten%20p%c3%b6yt%c3%a4%20(Virallinen%20musiikkivideo).mp3" type="audio/mpeg">Your browser does not support the audio element.</source>
+				</audio>
+				<p>
+					<a href="https://database-mobilehelp.imfast.io/Erika%20Vikman%20-%20Syntisten%20p%C3%B6yt%C3%A4%20(Virallinen%20musiikkivideo)%20(%201080%20X%201920%20).mp4">Watch Video!</a>
+				</p>
+			</div>
+			<br />
+
+			<div align="center">
+				<p id="h1">Erika Vikman - Cicciolina (UMK20)</p>
+				<audio controls="" id="h1">
+					<source src="http://mobilehelp.infinityfreeapp.com/Media/Erika%20Vikman%20-%20Cicciolina%20(Lyric%20Video)UMK20.mp3" type="audio/mpeg">Your browser does not support the audio element.</source>
+				</audio>
+				<p>
+					<a href="https://database-mobilehelp.imfast.io/Erika%20Vikman%20-%20Cicciolina%20(Live)%20__%20UMK20%20(%20720%20X%201280%20).mp4">Watch Video!</a>
+				</p>
+			</div>
+			<br />
+
+			<div align="center">
+				<p id="h1">Kymppilinja - Omg (Feat. Erika Vikman)</p>
+				<audio controls="" id="h1">
+					<source src="http://mobilehelp.infinityfreeapp.com/Media/Kymppilinja%20-%20OMG%20(feat.%20Erika%20Vikman).mp3" type="audio/mpeg">Your browser does not support the audio element.</source>
+				</audio>
+				<p>
+					<a href="https://mobilehelp.imfast.io/My%20Music.html#NoVideoAvailable!">Watch Video!</a>
+				</p>
+			</div>
+			<br />
+
+			<div align="center">
+				<p id="h1">Erika Vikman - Cicciolina (Live // Feat. Saara Aalto)</p>
+				<audio controls="" id="h1">
+					<source src="http://mobilehelp.infinityfreeapp.com/Media/Saara%20Aalto%20&%20Erika%20Vikman%20-%20Cicciolina%20duet%20LIVE%20@%20Hercules%20(%20256kbps%20cbr%20).mp3" type="audio/mpeg">Your browser does not support the audio element.</source>
+				</audio>
+				<p>
+					<a href="https://database-mobilehelp.imfast.io/Saara%20Aalto%20&%20Erika%20Vikman%20-%20Cicciolina%20duet%20LIVE%20@%20Hercules%20(%201080%20X%201920%2060fps%20).mp4">Watch Video!</a>
+				</p>
+			</div>
+			<br />
+
+			<div align="center">
+				<p id="h1">Saara Aalto - Monsters (Live // Eurovision 2018)</p>
+				<audio controls="" id="h1">
+					<source src="http://mobilehelp.infinityfreeapp.com/Media/Saara%20Aalto%20-%20Monsters%20(Official%20Music%20Video)%20(%20256kbps%20cbr%20).mp3" type="audio/mpeg">Your browser does not support the audio element.</source>
+				</audio>
+				<p>
+					<a href="https://database-mobilehelp.imfast.io/Saara%20Aalto%20-%20Monsters%20-%20Finland%20-%20LIVE%20-%20First%20Semi-Final%20-%20Eurovision%202018%20(%20720%20X%201280%20).mp4">Watch Video!</a>
+				</p>
+			</div>
+			<br />
+
+			<div align="center">
+				<p id="h1">Kaija Koo - Hullut Päivät</p>
+				<audio controls="" id="h1">
+					<source src="http://mobilehelp.infinityfreeapp.com/Media/Kaija%20Koo%20-%20Hullut%20p%c3%a4iv%c3%a4t%20(Virallinen%20musiikkivideo).mp3" type="audio/mpeg">Your browser does not support the audio element.</source>
+				</audio>
+				<p>
+					<a href="#NoVideoAvailable!">Watch Video!</a>
+				</p>
+			</div>
+			<br />
+
+			<br />
+
+			<div align="center">
+				<h5 id="h1">Copyright © MobileHelp & YouTube 2020. All rights reserved.</h5>
+			</div>
+			<br />
+
+			<div align="center">
+				<button id="hide" type="button" class="btn btn-primary" onclick="hide()">Simplified View</button>
+			</div>
+			<br />
+
+			<div align="center">
+				<div align="center" id="login_div" class="main-div">
+					<h3>Login With Firebase</h3>
+					<br />
+
+					<input type="email" placeholder="Email" id="email_field" />
+
+					<input type="password" placeholder="Password" id="password_field" />
+
+					<button onclick="login()">Login to Account</button>
+				</div>
+				<div align="center" id="user_div" class="loggedin-div">
+					<p id="user_para">Welcome to MobileHelp. You're currently logged in.</p>
+					<button onclick="logout(location.href='Streamify.html')">Log Out</button>
+				</div>
+			</div>
+			<br />
+
+			<script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+			<script>
+    // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  var firebaseConfig = {
+    apiKey: "AIzaSyCMpLhlcpzrUD5snkLi8dmc4sXDaql7Ats",
+    authDomain: "mobilehelp-944ff.firebaseapp.com",
+    databaseURL: "https://mobilehelp-944ff.firebaseio.com",
+    projectId: "mobilehelp-944ff",
+    storageBucket: "mobilehelp-944ff.appspot.com",
+    messagingSenderId: "489723168290",
+    appId: "1:489723168290:web:5effed13b72176c4cbac7b",
+    measurementId: "G-GJPRJ3X1MY"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+
+// Get a reference to the database service
+var database = firebase.database();
+  
+			</script>
+			<script>
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    // User is signed in.
+
+    document.getElementById("user_div").style.display = "block";
+    document.getElementById("login_div").style.display = "none";
+
+    var user = firebase.auth().currentUser;
+
+    if(user != null){
+
+      var email_id = user.email;
+      document.getElementById("user_para").innerHTML = "Welcome User : " + email_id;
+
+    }
+
+  } else {
+    // No user is signed in.
+
+    document.getElementById("user_div").style.display = "none";
+    document.getElementById("login_div").style.display = "block";
+
+  }
+});
+
+function login(){
+
+  var userEmail = document.getElementById("email_field").value;
+  var userPass = document.getElementById("password_field").value;
+
+  firebase.auth().signInWithEmailAndPassword(userEmail, userPass).catch(function(error) {
+    // Handle Errors here.
+    var errorCode = error.code;
+    var errorMessage = error.message;
+
+    window.alert("Error : " + errorMessage);
+
+    // ...
+  });
+
+}
+
+function logout(){
+  firebase.auth().signOut();
+}
+
+
+			</script>
+			<br />
+
+			<script>
+function hide() {
+  var x = document.getElementById("sidebar");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+
+
+			</script>
+			<script>
+firebase.auth().signInWithEmailAndPassword(email, password)
+    .catch(function(error) {
+  // Handle Errors here.
+  var errorCode = error.code;
+  var errorMessage = error.message;
+  if (errorCode === 'auth/wrong-password') {
+    alert('Wrong password.');
+  } else {
+    alert(errorMessage);
+  }
+  console.log(error);
+});
+
+			</script>
+			<script>
+useDeviceLanguage ( ) : void
+</script>
+ <script>
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    // User is signed in.
+  } else {
+location.href = "http://mobilehelp.infinityfreeapp.com/Premium/Login.html";
+  }
+});
+</script>
+<script>
+FirebaseAuth.getInstance().getCurrentUser()
+
+			</script>
+			<script>
+var provider = new firebase.auth.GoogleAuthProvider();
+<
+			</script>
+			<script>
+firebase.auth().signInWithPopup(provider).then(function(result) {
+  // This gives you a Google Access Token. You can use it to access the Google API.
+  var token = result.credential.accessToken;
+  // The signed-in user info.
+  var user = result.user;
+  // ...
+}).catch(function(error) {
+  // Handle Errors here.
+  var errorCode = error.code;
+  var errorMessage = error.message;
+  // The email of the user's account used.
+  var email = error.ema l;
+  // The firebase.auth.AuthCredential type that was used.
+  var credential = error.credential;
+  // ...
+});
+
+			</script>
+			<script>provider.addScope('https://www.googleapis.com/auth/contacts.readonly');</script>
+			<script>console.log("Terms: http://mobilehelp.infinityfreeapp.com/Premium/terms.html");</script>
+			<script>
+function error() {
+  alert('The image could not be loaded.');
+}
+
+			</script>
+			<script>
+function bgColor() {
+  document.body.style.backgroundColor = "#696969";
+}
+
+			</script>
+		</div>
+	</body>
+</html>
