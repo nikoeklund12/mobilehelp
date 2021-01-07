@@ -1,0 +1,91 @@
+<html>
+  <head>
+<title>MobileHelp | Report</title>
+    <!-- Load the Firebase library before loading the body. -->
+    <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase.js"></script>
+
+    <!-- Load the jQuery library, which we'll use to manipulate HTML elements with Javascript. -->
+    <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+
+    <!-- Load Bootstrap stylesheet, which will is CSS that makes everything prettier and also responsive (aka will work on all devices of all sizes). -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+  </head>
+  <body>
+        <script>
+if (location.protocol == 'http:')
+  location.href = location.href.replace(/^http:/, 'https:')
+    </script>
+    <!-- Load the application script, which will save data to our Firebase app when we click the button. -->
+    <script>
+// TODO: Replace with your project's config object. You can find this
+// by navigating to your project's console overview page
+// (https://console.firebase.google.com/project/your-project-id/overview)
+// and clicking "Add Firebase to your web app"
+var config = {
+  apiKey: "AIzaSyCMpLhlcpzrUD5snkLi8dmc4sXDaql7Ats",
+  authDomain: "mobilehelp-944ff.firebaseapp.com",
+  databaseURL: "https://mobilehelp-944ff.firebaseio.com",
+  storageBucket: "mobilehelp-944ff.appspot.com",
+};
+
+// Initialize your Firebase app
+firebase.initializeApp(config);
+
+// Reference to the recommendations object in your Firebase database
+var recommendations = firebase.database().ref("recommendations");
+
+// Save a new recommendation to the database, using the input in the form
+var submitRecommendation = function () {
+
+  // Get input values from each of the form elements
+  var title = $("#talkTitle").val();
+  var presenter = $("#talkPresenter").val();
+  var link = $("#talkLink").val();
+
+  // Push a new recommendation to the database using those values
+  recommendations.push({
+    "title": title,
+    "text": presenter,
+    "number": link
+  });
+};
+
+// When the window is fully loaded, call this function.
+// Note: because we are attaching an event listener to a particular HTML element
+// in this function, we can't do that until the HTML element in question has
+// been loaded. Otherwise, we're attaching our listener to nothing, and no code
+// will run when the submit button is clicked.
+$(window).load(function () {
+
+  // Find the HTML element with the id recommendationForm, and when the submit
+  // event is triggered on that element, call submitRecommendation.
+  $("#recommendationForm").submit(submitRecommendation);
+
+});
+</script>
+    <div class="container">
+      <h1>Bug Report</h1>
+
+      <h3>Or</h3>
+
+      <h3>mobilehelp.reply@gmail.com</h3>
+
+      <form id="recommendationForm">
+        <div class="form-group">
+          <label for="talkTitle">Title</label>
+          <input class="form-control" id="talkTitle" placeholder="Title">
+        </div>
+        <div class="form-group">
+          <label for="talkPresenter">Text</label>
+          <input class="form-control" id="talkPresenter" placeholder="Text">
+        </div>
+        <div class="form-group">
+          <label for="talkLink">Number</label>
+          <input type="number" class="form-control" id="talkLink" placeholder="Example: +358 123 456 7890">
+        </div>
+        <!-- When you click this button, trigger the submit event on this form. -->
+        <button type="submit" class="btn btn-default">Submit</button>
+      </form>
+    </div>
+  </body>
+</html>

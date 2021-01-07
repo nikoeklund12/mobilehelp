@@ -1,0 +1,192 @@
+<html>
+<head>
+        <script>
+    window.onload = function () {
+           document.addEventListener("contextmenu", function (e) {
+               e.preventDefault();
+           }, false);
+           document.addEventListener("keydown", function (e) {
+               //document.onkeydown = function(e) {
+               // "I" key
+               if (e.ctrlKey && e.shiftKey && e.keyCode == 73) {
+                   disabledEvent(e);
+               }
+               // "J" key
+               if (e.ctrlKey && e.shiftKey && e.keyCode == 74) {
+                   disabledEvent(e);
+               }
+               // "S" key + macOS
+               if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+                   disabledEvent(e);
+               }
+               // "U" key
+               if (e.ctrlKey && e.keyCode == 85) {
+                   disabledEvent(e);
+               }
+               // "F12" key
+               if (event.keyCode == 123) {
+                   disabledEvent(e);
+               }
+           }, false);
+           function disabledEvent(e) {
+               if (e.stopPropagation) {
+                   e.stopPropagation();
+               } else if (window.event) {
+                   window.event.cancelBubble = true;
+               }
+               e.preventDefault();
+               return false;
+           }
+       }
+//edit: removed ";" from last "}" because of javascript error
+        </script>
+<style>
+body {
+  background: #fff;
+  padding: 0px;
+  margin: 0px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 16px;
+  color: gray;
+}
+input, button {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+}
+.main-div, .loggedin-div {
+  width: 20%;
+  margin: 0px auto;
+  margin-top: 150px;
+  padding: 20px;
+  display: none;
+}
+.main-div input {
+  color: gray;
+  display: block;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: #fff;
+  padding: 15px;
+  outline: none;
+  width: 100%;
+  margin-bottom: 20px;
+  transition: 0.3s;
+  -webkit-transition: 0.3s;
+  -moz-transition: 0.3s;
+}
+.main-div input:focus {
+  border: 1px solid #777;
+  color: gray;
+}
+.main-div button, .loggedin-div button {
+  background: #5d8ffc;
+  color: #fff;
+  border: 1px solid #5d8ffc;
+  border-radius: 5px;
+  padding: 15px;
+  display: block;
+  width: 100%;
+  transition: 0.3s;
+  -webkit-transition: 0.3s;
+  -moz-transition: 0.3s;
+}
+.main-div button:hover, .loggedin-div button:hover {
+  background: #fff;
+  color: #5d8ffc;
+  border: 1px solid #5d8ffc;
+  cursor: pointer;
+}
+</style>
+  <title>Sign Up | MobileHelp</title>
+  <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
+</head>
+<body>
+        <script>alert("This service is disabled!")</script>
+  <script>
+if (location.protocol == 'http:')
+  location.href = location.href.replace(/^http:/, 'https:')
+    </script>
+  <div id="login_div" class="main-div">
+    <h3>Sign Up | MobileHelp</h3>
+    <input autocomplete="off" type="email" placeholder="Email" id="email_field" required />
+    <input type="password" placeholder="Password" id="password_field" required />
+    <button onclick="login()">Create Account</button>
+  </div>
+  <div id="user_div" class="loggedin-div">
+    <h3>Thank you for registering :)</h3>
+    <p id="user_para">Welcome to MobileHelp. You're currently logged in.</p>
+    <button onclick="logout(location.href='https://mobilehelp.epizy.com/Login.html')">Go To Login</button>
+  </div>
+   <div align="center">
+  <p style="color:gray;">Or</p>
+  <a style="color:gray;" link href="https://mobilehelp.epizy.com/Login.html">Login</a>
+  <h1 style="color:gray;position:absolute;bottom:0;align:center;width:100%;">Powered By Google Firebase</h1>
+  </div>
+  <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+  <script>
+    // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  var firebaseConfig = {
+    apiKey: "AIzaSyCMpLhlcpzrUD5snkLi8dmc4sXDaql7Ats",
+    authDomain: "mobilehelp-944ff.firebaseapp.com",
+    databaseURL: "https://mobilehelp-944ff.firebaseio.com",
+    projectId: "mobilehelp-944ff",
+    storageBucket: "mobilehelp-944ff.appspot.com",
+    messagingSenderId: "489723168290",
+    appId: "1:489723168290:web:5effed13b72176c4cbac7b",
+    measurementId: "G-GJPRJ3X1MY"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+
+// Get a reference to the database service
+var database = firebase.database();
+  </script>
+  <script>
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    // User is signed in.
+
+    document.getElementById("user_div").style.display = "block";
+    document.getElementById("login_div").style.display = "none";
+
+    var user = firebase.auth().currentUser;
+
+    if(user != null){
+
+      var email_id = user.email;
+      document.getElementById("user_para").innerHTML = "Welcome to our services " + email_id;
+
+    }
+
+  } else {
+    // No user is signed in.
+
+    document.getElementById("user_div").style.display = "none";
+    document.getElementById("login_div").style.display = "block";
+
+  }
+});
+/*function login(){
+
+  var userEmail = document.getElementById("email_field").value;
+  var userPass = document.getElementById("password_field").value
+
+firebase.auth().createUserWithEmailAndPassword(userEmail, userPass)
+  .then((user) => {
+    // Signed in 
+    // ...
+  })
+  .catch((error) => {
+    var errorCode = error.code;
+    var errorMessage = error.message;
+    // ..
+  });
+}*/
+function logout(){
+ window.open("https://mobilehelp.epizy.com/Login.html");
+}
+</script>
+</body>
+</html>
