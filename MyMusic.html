@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+#myInput {
+  background-position: 10px 12px;
+  background-repeat: no-repeat;
+  width: 70%;
+  font-size: 16px;
+  padding: 12px 20px 12px 40px;
+  border: 3px solid gray;
+  border-radius: 25px;
+  margin-bottom: 12px;
+}
+
+#myUL {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+border-radius: 25px;
+  align: center;
+}
+
+#myUL li a {
+ border: 2px solid gray; 
+border-radius: 25px;
+  margin-top: -1px; /* Prevent double borders */
+  background-color: #f6f6f6;
+  padding: 15px;
+  text-decoration: none;
+  font-size: 18px;
+  color: gray;
+  display: block;
+  width: 67%;
+ margin: auto;
+}
+
+#myUL li a:hover:not(.header) {
+  background-color: #eee;
+}
+
+button {
+color: white;
+background-color: #778899;
+border: 1px solid gray;
+  border-radius: 7px;
+width: auto;
+height: auto;
+}
+.closebtn:hover {
+      color: black;
+    }
+</style>
+
+
+<style>
+    /* Center the loader */
+    #loader {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      z-index: 1;
+      width: 150px;
+      height: 150px;
+      margin: -75px 0 0 -75px;
+      border: 16px solid #f3f3f3;
+      border-radius: 50%;
+      border-top: 16px solid #778899;
+      width: 120px;
+      height: 120px;
+      -webkit-animation: spin 2s linear infinite;
+      animation: spin 2s linear infinite;
+    }
+
+    @-webkit-keyframes spin {
+      0% {
+        -webkit-transform: rotate(0deg);
+      }
+
+      100% {
+        -webkit-transform: rotate(360deg);
+      }
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Add animation to "page content" */
+    .animate-bottom {
+      position: relative;
+      -webkit-animation-name: animatebottom;
+      -webkit-animation-duration: 1s;
+      animation-name: animatebottom;
+      animation-duration: 1s
+    }
+
+    @-webkit-keyframes animatebottom {
+      from {
+        bottom: -100px;
+        opacity: 0
+      }
+
+      to {
+        bottom: 0px;
+        opacity: 1
+      }
+    }
+
+    @keyframes animatebottom {
+      from {
+        bottom: -100px;
+        opacity: 0
+      }
+
+      to {
+        bottom: 0;
+        opacity: 1
+      }
+    }
+
+    #myDiv {
+      display: none;
+      text-align: center;
+    }
+
+
+ .alert {
+      padding: 20px;
+      background-color: #778899;
+      color: white;
+    }
+
+  .closebtn {
+      margin-left: 15px;
+      color: white;
+      font-weight: bold;
+      float: right;
+      font-size: 22px;
+      line-height: 20px;
+      cursor: pointer;
+      transition: 0.3s;           
+    }
+
+  </style>
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <title>My Music</title> <!-- add icon link -->
+        <link rel="icon" href="http://mobilehelp.infinityfreeapp.com/Media/title.png" type="image/x-icon">
+ <link href="./My Music_files/bootstrap.css" rel="stylesheet"> <link href="./My Music_files/pe-icon-7-stroke.css" rel="stylesheet"> <link href="./My Music_files/ct-navbar.css" rel="stylesheet"> <script src="./My Music_files/jquery-1.10.2.js.lataus"></script> <script src="./My Music_files/bootstrap.js.lataus"></script> <script src="./My Music_files/ct-navbar.js.lataus"></script> <link rel="stylesheet" href="./My Music_files/font-awesome.min.css">  
+<!--Bootstrap JS> <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script> <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script> <!--Bootstrap CSS Theme --><link rel="stylesheet" href="./My Music_files/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous"> <style> a {color: gray;} p {color: gray; font-size: 20px;} audio{width: 70%;}
+
+
+ body { background-color: white; } body {font-family: "Lato", sans-serif;} .sidebar { height: 100%; width: 190px; position: fixed; z-index: 1; top: 0; left: 0; background-color: white; overflow-x: hidden; padding-top: 16px; } .sidebar a { padding: 6px 8px 6px 16px; text-decoration: none; font-size: 20px; color: gray; display: block; } .sidebar a:hover {color:   #404040;}  /* Same as the width of the sidenav */ padding: 0px 10px; } @media screen and (max-height: 450px) { .sidebar {padding-top: 15px;} .sidebar a {font-size: 18px;} } </style> <style>h5 {color: gray;}</style> </head> <body  style="margin:0;" id="body" body onload="load()">
+
+
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.22.1/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/7.22.1/firebase-analytics.js"></script>
+
+<script>
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  var firebaseConfig = {
+    apiKey: "AIzaSyCMpLhlcpzrUD5snkLi8dmc4sXDaql7Ats",
+    authDomain: "mobilehelp-944ff.firebaseapp.com",
+    databaseURL: "https://mobilehelp-944ff.firebaseio.com",
+    projectId: "mobilehelp-944ff",
+    storageBucket: "mobilehelp-944ff.appspot.com",
+    messagingSenderId: "489723168290",
+    appId: "1:489723168290:web:5effed13b72176c4cbac7b",
+    measurementId: "G-GJPRJ3X1MY"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+
+// Get a reference to the database service
+var database = firebase.database();
+
+</script>
+  <!-- Insert these scripts at the bottom of the HTML, but before you use any Firebase services -->
+
+  <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.22.1/firebase-app.js"></script>
+
+  <!-- Add the standard Performance Monitoring library -->
+  <script src="https://www.gstatic.com/firebasejs/7.22.1/firebase-performance.js"></script>
+<!-- Previously loaded Firebase SDKs -->
+
+<script>
+  // TODO: Replace the following with your app's Firebase project configuration
+  var firebaseConfig = {
+    // ...
+  };
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+
+  // Initialize Performance Monitoring and get a reference to the service
+  var perf = firebase.performance();
+</script>
+
+
+<div id="loader"></div>
+  <div style="display:none;" id="myDiv" class="animate-bottom">
+<div class="alert">
+      <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+      <strong>Message!</strong> Try Streamify+ for free!
+    </div>
+ <div id="sidebar" class="sidebar"> <div class="logo"> <img src="http://mobilehelp.infinityfreeapp.com/Media/mainpage.png"> </div> <br> <a href="http://mobilehelp.infinityfreeapp.com/Welcome.html"><i class="fa fa-fw fa-home"></i> Home</a>  
+<a href="ftp://192.168.43.179:2121/"><i class="fa fa-fw fa-envelope">
+</i> More</a>
+ <a href="mailto:mobilehelp.reply@gmail.com"><i class="fa fa-fw fa-envelope">
+</i> Contact</a> 
+<a href="http://mobilehelp.infinityfreeapp.com/Report.html"><i class="fa fa-fw fa-envelope">
+</i> Report</a> 
+<a href="https://github.com/nikoeklund12/mobilehelp"><i class="fa fa-fw fa-envelope">
+</i> Source Code</a> 
+<a href="http://mobilehelp.infinityfreeapp.com/Login.html"><i class="fa fa-fw fa-envelope">
+</i> Try Streamify+ for free!</a> 
+</div>
+<div class="main">
+<br>
+
+<br>
+<div align="center">
+ <p>Erika Vikman - Syntisten Pöytä</p> <audio controls=""> <source src="http://mobilehelp.infinityfreeapp.com/Media/Erika%20Vikman%20-%20Syntisten%20p%c3%b6yt%c3%a4%20(Virallinen%20musiikkivideo).mp3" type="audio/mpeg"> Your browser does not support the audio element. </audio>
+ <br>
+ <button onclick="myFunction()">Watch Video!</button>
+
+</div>
+<br>
+<div align="center">
+ <p>Erika Vikman - Cicciolina (UMK20)</p> <audio controls=""> <source src="http://mobilehelp.infinityfreeapp.com/Media/Erika%20Vikman%20-%20Cicciolina%20(Lyric%20Video)UMK20.mp3" type="audio/mpeg"> Your browser does not support the audio element. </audio>
+ <br>
+ <button onclick="myFunction()">Watch Video!</button>
+</div>
+ <br>
+</div>
+<script>
+function myFunction() {
+  alert("You founded premium feature!");
+}
+</script>
+<div align="center">
+ <h5> Copyright © YouTube 2020. All rights reserved. Videos has been uploaded from YouTube.</h5> 
+</div>
+<br>
+	
+	
+	
+ <script>
+      var myVar;
+
+      function load() {
+        myVar = setTimeout(showPage, 30000);
+      }
+
+      function showPage() {
+        document.getElementById("loader").style.display = "none";
+        document.getElementById("myDiv").style.display = "block";
+      }
+    </script>
+
+
+  </div>
+  
+</body></html>
